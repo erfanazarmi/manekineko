@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --background-image: radial-gradient(circle, rgba(23, 23, 23, 0.4) 1px, transparent 1px);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  background-image: var(--background-image);
+  background-size: 40px 40px;
+}
+
+::selection {
+  background-color: #ef4444;
+  color: white;
+}
