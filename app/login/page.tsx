@@ -1,0 +1,31 @@
+import Link from "next/link";
+import Image from "next/image";
+import LoginForm from "../ui/login-form";
+
+export default function Page() {
+  return (
+    <main className="min-h-dvh flex flex-col items-center justify-center pt-24">
+      <div className="max-w-[360px] bg-background border rounded-lg px-12 pt-16 pb-12 m-5 relative">
+        <Link href="/" title="Home">
+          <div className="bg-background border rounded-full p-4 absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2/3">
+            <Image
+              src="/paw.svg"
+              alt="Go to homepage"
+              width={60}
+              height={60}
+              priority
+              className="dark:invert"
+            />
+          </div>
+        </Link>
+        <LoginForm />
+      </div>
+      <div className="mt-6 mb-10">
+        New here?{" "}
+        <Link href="/signup" className="underline">
+          Create an account.
+        </Link>
+      </div>
+    </main>
+  );
+}
