@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { AtSymbolIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { useActionState } from "react";
+import { authenticate } from "@/app/lib/actions";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -11,8 +14,12 @@ export default function LoginForm() {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
+
   return (
-    <form className="space-y-10">
+    <form action={formAction} className="space-y-10">
       <div>
         <label htmlFor="emailInput" className="block">
           <AtSymbolIcon className="size-5 text-red-500 inline mr-2" />
@@ -52,9 +59,21 @@ export default function LoginForm() {
           </button>
         </div>
       </div>
+      <input type="hidden" name="redirectTo" value={callbackUrl} />
+      {errorMessage && (
+        <div
+          className="flex h-8 items-end space-x-1"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <p className="text-sm text-red-500">{errorMessage}</p>
+        </div>
+      )}
       <button
         type="submit"
         className="cursor-pointer w-full bg-red-500 rounded-md px-4 py-2 text-white font-bold"
+        aria-disabled={isPending}
+        disabled={isPending}
       >
         Login
       </button>

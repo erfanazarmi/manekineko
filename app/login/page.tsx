@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import LoginForm from "../ui/login-form";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -18,7 +19,9 @@ export default function Page() {
             />
           </div>
         </Link>
-        <LoginForm />
+        <Suspense>
+          <LoginForm />
+        </Suspense>
       </div>
       <div className="mt-6 mb-10">
         New here?{" "}
