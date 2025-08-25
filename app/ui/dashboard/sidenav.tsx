@@ -1,5 +1,7 @@
 import NavLinks from "@/app/ui/dashboard/nav-links";
 import Image from "next/image";
+import { PowerIcon } from "@heroicons/react/24/outline";
+import { signOut } from "@/auth";
 
 export default function SideNav() {
   return (
@@ -11,6 +13,17 @@ export default function SideNav() {
       <div className="flex grow flex-row justify-between space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2">
         <NavLinks />
         <div className="hidden h-auto w-full grow rounded-md bg-gray-100 dark:bg-neutral-800 lg:block"></div>
+        <form
+          action={async () => {
+            "use server";
+            await signOut({ redirectTo: "/" });
+          }}
+        >
+          <button className="flex h-[48px] w-full grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium cursor-pointer bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-900 lg:flex-none lg:justify-start lg:p-2 lg:px-3">
+            <PowerIcon className="w-6" />
+            <div className="hidden lg:block">Sign Out</div>
+          </button>
+        </form>
       </div>
     </div>
   );
