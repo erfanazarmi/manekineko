@@ -67,7 +67,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="bg-gray-200 col-span-2 flex items-center justify-center p-10 mt-10 lg:col-span-1 lg:justify-end lg:p-20 lg:bg-transparent">
+          <div className="bg-gray-200 dark:bg-[#050505] col-span-2 flex items-center justify-center p-10 mt-10 lg:col-span-1 lg:justify-end lg:p-20 lg:bg-transparent lg:dark:bg-transparent">
             <div className="w-full text-center text-lg md:w-[80%] lg:w-[160px] lg:text-justify">
               <p className="mb-4">
                 <strong className="text-2xl">招き猫</strong>
