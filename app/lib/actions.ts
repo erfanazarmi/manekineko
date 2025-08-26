@@ -1,7 +1,7 @@
 "use server";
 
 import { signIn } from "@/auth";
-import { AuthError } from "next-auth";
+import { AuthError, CredentialsSignin } from "next-auth";
 
 export async function authenticate(
   prevState: string | undefined,
@@ -11,11 +11,13 @@ export async function authenticate(
     await signIn("credentials", formData);
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return "Invalid credentials.";
-        default:
-          return "Something went wrong.";
+      if (error instanceof CredentialsSignin) {
+        if ((error as any).code === "email_not_verified") {
+          return "Your email is not verified.";
+        }
+        return "Invalid credentials.";
+      } else {
+        return "Something went wrong.";
       }
     }
     throw error;
