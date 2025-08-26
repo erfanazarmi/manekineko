@@ -1,10 +1,14 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import { authConfig } from "./auth.config";
 import Credentials from "next-auth/providers/credentials";
 import type { User } from "@/app/lib/definitions";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import postgres from "postgres";
+
+class EmailNotVerifiedError extends CredentialsSignin {
+  code = "email_not_verified";
+}
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -33,7 +37,10 @@ export const { auth, signIn, signOut } = NextAuth({
           if (!user) return null;
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
-          if (passwordsMatch) return user;
+          if (passwordsMatch) {
+            if (!user.email_verified) throw new EmailNotVerifiedError();
+            return user;
+          }
         }
 
         console.log("Invalid credentials");
