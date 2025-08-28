@@ -6,7 +6,7 @@ import { Suspense } from "react";
 export default function Page() {
   return (
     <main className="min-h-dvh flex flex-col items-center justify-center pt-24">
-      <div className="max-w-[360px] bg-background border rounded-lg px-12 pt-16 pb-12 m-5 relative">
+      <div className="max-w-[360px] w-full bg-background border rounded-lg px-12 pt-16 pb-12 m-5 relative">
         <Link href="/" title="Home">
           <div className="bg-background border rounded-full p-4 absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2/3">
             <Image
