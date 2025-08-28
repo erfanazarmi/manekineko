@@ -1,0 +1,37 @@
+import postgres from "postgres";
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const token = searchParams.get("token");
+
+  const isProd = process.env.NODE_ENV === "production";
+  const redirectUrl = isProd
+    ? "https://manekineko.netlify.app"
+    : "http://localhost:3000";
+
+  if (!token) {
+    return Response.redirect(`${redirectUrl}/verify-result?status=invalid`);
+  }
+
+  const [user] = await sql`
+    SELECT * FROM users 
+    WHERE verification_token = ${token} 
+      AND verification_expires > NOW()
+  `;
+
+  if (!user) {
+    return Response.redirect(`${redirectUrl}/verify-result?status=expired`);
+  }
+
+  await sql`
+    UPDATE users
+    SET email_verified = true,
+        verification_token = null,
+        verification_expires = null
+    WHERE id = ${user.id}
+  `;
+
+  return Response.redirect(`${redirectUrl}/verify-result?status=success`);
+}
