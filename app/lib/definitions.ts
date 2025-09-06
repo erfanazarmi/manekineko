@@ -8,3 +8,9 @@ export type User = {
   verification_token?: string | null;
   verification_expires?: string | null;
 };
+
+export type Category = {
+  id: string;
+  user_id: string;
+  name: string;
+};

@@ -1,4 +1,4 @@
-import type { User } from "./definitions";
+import type { User, Category } from "./definitions";
 
 const users: User[] = [
   {
@@ -23,4 +23,17 @@ const users: User[] = [
   },
 ];
 
-export { users };
+const categories: Category[] = [
+  {
+    id: "e33809e4-8cd9-410a-ae4f-69398ba66d75",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    name: "Food",
+  },
+  {
+    id: "4fb57244-d2fd-4904-9da5-c1ab76255076",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    name: "Gift",
+  },
+];
+
+export { users, categories };
