@@ -1,4 +1,4 @@
-import type { User, Category } from "./definitions";
+import type { User, Category, Transaction } from "./definitions";
 
 const users: User[] = [
   {
@@ -36,4 +36,16 @@ const categories: Category[] = [
   },
 ];
 
-export { users, categories };
+const transactions: Transaction[] = [
+  {
+    id: "3e5f7g8h-4c6d-5e9a-9b8f-334455667788",
+    user_id: "410544b2-4001-4271-9855-fec4b6a6442a",
+    title: "Lunch",
+    amount: -300000,
+    category_id: "e33809e4-8cd9-410a-ae4f-69398ba66d75",
+    description: "Hamburger",
+    date: "2025-09-06",
+  },
+];
+
+export { users, categories, transactions };
