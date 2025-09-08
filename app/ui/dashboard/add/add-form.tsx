@@ -9,7 +9,7 @@ export default function AddForm({ categories }: { categories: Category[] }) {
   const today = new Date().toISOString().split("T")[0];
 
   const initialState: AddTransactionState = { message: null, errors: { errors: [], properties: {} } };
-  const [state, formAction] = useActionState(addTransaction, initialState);
+  const [state, formAction, isPending] = useActionState(addTransaction, initialState);
 
   const initialFormData = {
     type: "expense",
@@ -28,11 +28,11 @@ export default function AddForm({ categories }: { categories: Category[] }) {
   }
 
   useEffect(() => {
-    if(state.message)
+    if(!isPending && state.message)
       setMessage(state.message);
-    if(state.message === "Transaction created successfully")
+    if(!isPending && state.message === "Transaction created successfully")
       setFormData(initialFormData);
-  }, [state.message]);
+  }, [isPending, state.message]);
 
   return (
     <div className="w-full flex justify-center">
