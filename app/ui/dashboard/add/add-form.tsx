@@ -3,7 +3,7 @@
 import { Category } from "@/app/lib/definitions";
 import { addTransaction, AddTransactionState } from "@/app/lib/actions";
 import { useState, useEffect, useActionState } from "react";
-import clsx from "clsx";
+import AlertBox from "../alert-box";
 
 export default function AddForm({ categories }: { categories: Category[] }) {
   const today = new Date().toISOString().split("T")[0];
@@ -20,18 +20,18 @@ export default function AddForm({ categories }: { categories: Category[] }) {
     date: today,
   }
   const [formData, setFormData] = useState(initialFormData);
-  const [message, setMessage] = useState("");
+
+  const [isAlertBoxOpen, setIsAlertBoxOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({...formData, [e.target.name]: e.target.value});
-    setMessage("");
   }
 
   useEffect(() => {
-    if(!isPending && state.message)
-      setMessage(state.message);
-    if(!isPending && state.message === "Transaction created successfully")
+    if(!isPending && state.message === "Transaction created successfully") {
       setFormData(initialFormData);
+      setIsAlertBoxOpen(true);
+    }
   }, [isPending, state.message]);
 
   return (
@@ -165,16 +165,16 @@ export default function AddForm({ categories }: { categories: Category[] }) {
           >
             Add
           </button>
-          <p
-            className={clsx(
-              "text-center",
-              {"text-red-500": state.message !== "Transaction created successfully"}
-            )}
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            {message}
-          </p>
+
+          {state.message !== "Transaction created successfully" && (
+            <p className="text-center text-red-500" aria-live="polite" aria-atomic="true">
+              {state.message}
+            </p>
+          )}
+
+          {!isPending && state.message === "Transaction created successfully" && isAlertBoxOpen && (
+            <AlertBox message={state.message} close={() => setIsAlertBoxOpen(false)} />
+          )}
         </form>
       </main>
     </div>
