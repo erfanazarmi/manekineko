@@ -1,4 +1,4 @@
-import { CategoryFormState, addCategory, editCategory, deleteCategory } from "@/app/lib/actions";
+import { CategoryFormState, addCategory, editCategory, deleteCategory } from "@/app/lib/actions/categories";
 import { Category } from "@/app/lib/definitions";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useActionState } from "react";

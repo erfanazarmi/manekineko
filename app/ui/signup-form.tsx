@@ -3,7 +3,7 @@
 import { useState, useActionState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { AtSymbolIcon, KeyIcon, UserIcon } from "@heroicons/react/24/outline";
-import { register, type RegisterState } from "../lib/actions";
+import { register, type RegisterState } from "../lib/actions/register";
 
 const initialState: RegisterState = { status: "idle" };
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { AtSymbolIcon, KeyIcon } from "@heroicons/react/24/outline";
 import { useActionState } from "react";
-import { authenticate } from "@/app/lib/actions";
+import { authenticate } from "@/app/lib/actions/authenticate";
 import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
