@@ -1,14 +1,14 @@
 "use client";
 
 import { Category } from "@/app/lib/definitions";
-import { addTransaction, AddTransactionState } from "@/app/lib/actions";
+import { addTransaction, TransactionFormState } from "@/app/lib/actions/transactions";
 import { useState, useEffect, useActionState } from "react";
 import AlertBox from "../alert-box";
 
 export default function AddForm({ categories }: { categories: Category[] }) {
   const today = new Date().toISOString().split("T")[0];
 
-  const initialState: AddTransactionState = { message: null, errors: { errors: [], properties: {} } };
+  const initialState: TransactionFormState = { message: null, errors: { errors: [], properties: {} } };
   const [state, formAction, isPending] = useActionState(addTransaction, initialState);
 
   const initialFormData = {
