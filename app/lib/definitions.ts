@@ -25,3 +25,13 @@ export type Transaction = {
   date: string;
   created_at?: string;
 };
+
+export type TransactionsTable = {
+  id: string;
+  title: string;
+  amount: number;
+  category_id: string;
+  category_name: string;
+  description: string | null;
+  date: string;
+}
