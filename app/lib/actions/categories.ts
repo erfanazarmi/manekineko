@@ -122,7 +122,7 @@ export async function deleteCategory(
   try {
     await sql`DELETE FROM categories WHERE id = ${id} AND user_id = ${session.user.id}`;
   } catch (error) {
-    return {message: "Database Error: Failed to create category."};
+    return {message: "Database Error: Failed to delete category."};
   }
 
   revalidatePath("/dashboard/settings");
