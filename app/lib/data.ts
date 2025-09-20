@@ -43,7 +43,7 @@ export async function fetchTransactions(currentPage: number): Promise<Transactio
         transactions.category_id,
         categories.name AS category_name
       FROM transactions
-      JOIN categories ON transactions.category_id = categories.id
+      LEFT JOIN categories ON transactions.category_id = categories.id
       WHERE transactions.user_id = ${session.user.id}
       ORDER BY transactions.created_at DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}

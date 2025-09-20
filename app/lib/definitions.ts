@@ -30,8 +30,8 @@ export type TransactionsTable = {
   id: string;
   title: string;
   amount: number;
-  category_id: string;
-  category_name: string;
+  category_id: string | null;
+  category_name: string | null;
   description: string | null;
   date: string;
 }
