@@ -3,6 +3,8 @@
 import { auth } from "@/auth";
 import { z } from "zod";
 import postgres from "postgres";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -79,4 +81,20 @@ export async function addTransaction(
     message: "Transaction created successfully",
     errors: { errors: [], properties: {} },
   };
+}
+
+export async function deleteTransaction(id: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {message: "Unauthorized: sign in required."}
+  }
+
+  try {
+    await sql`DELETE FROM transactions WHERE id = ${id} AND user_id = ${session.user.id}`;
+  } catch (error) {
+    return {message: "Database Error: Failed to delete transaction."};
+  }
+  
+  revalidatePath("/dashboard/transactions");
+  redirect("/dashboard/transactions");
 }
