@@ -50,7 +50,7 @@ export default async function TransactionsTable() {
               <td className="p-5 whitespace-nowrap">
                 <div className="flex justify-end gap-3">
                   <EditTransaction />
-                  <DeleteTransaction />
+                  <DeleteTransaction transaction={transaction} />
                 </div>
               </td>
             </tr>
