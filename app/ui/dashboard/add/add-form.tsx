@@ -168,8 +168,10 @@ export default function AddForm({ categories }: { categories: Category[] }) {
           <button
             type="submit"
             className="cursor-pointer block p-2 bg-red-500 text-white font-bold rounded-md mt-10"
+            aria-disabled={isPending}
+            disabled={isPending}
           >
-            Add
+            {isPending ? "Submitting..." : "Add"}
           </button>
 
           {state.message !== "Transaction created successfully" && (
