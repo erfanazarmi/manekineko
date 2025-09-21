@@ -13,7 +13,7 @@ export default function AddForm({ categories }: { categories: Category[] }) {
 
   const initialFormData = {
     type: "expense",
-    category: categories[0],
+    category: "empty",
     title: "",
     amount: "",
     description: "",
@@ -71,6 +71,12 @@ export default function AddForm({ categories }: { categories: Category[] }) {
                 className="w-full p-2 border-1 border-gray-400 rounded-md outline-none"
                 required
               >
+                <option
+                  value="empty"
+                  className="dark:bg-black"
+                >
+                  — None —
+                </option>
                 {categories.map((category) => (
                   <option
                     key={category.name}

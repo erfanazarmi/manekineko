@@ -67,7 +67,7 @@ export async function addTransaction(
   try {
     await sql`
       INSERT INTO transactions (user_id, title, amount, category_id, description, date)
-      VALUES (${session.user.id}, ${title}, ${(type === "expense" ? -1 : 1) * amount}, ${category}, ${description ?? null}, ${date})
+      VALUES (${session.user.id}, ${title}, ${(type === "expense" ? -1 : 1) * amount}, ${category === "empty" ? null : category}, ${description ?? null}, ${date})
     `;
   } catch (error) {
     return {
