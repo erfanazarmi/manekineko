@@ -4,10 +4,11 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { TransactionsTable } from "@/app/lib/definitions";
 import { deleteTransaction } from "@/app/lib/actions/transactions";
 import { useState } from "react";
+import { redirect } from "next/navigation";
 
-export function EditTransaction() {
+export function EditTransaction({id}: {id: string}) {
   return (
-    <button className="cursor-pointer">
+    <button className="cursor-pointer" onClick={() => redirect(`/dashboard/transactions/edit/${id}`)}>
       <PencilIcon className="w-5" />
     </button>
   );

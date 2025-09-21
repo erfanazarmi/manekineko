@@ -83,6 +83,61 @@ export async function addTransaction(
   };
 }
 
+export async function editTransaction(
+  id: string,
+  prevState: TransactionFormState,
+  formData: FormData
+): Promise<TransactionFormState> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return {message: "Unauthorized: sign in required."}
+  }
+
+  const validatedFields = TransactionSchema.safeParse({
+    title: formData.get("title"),
+    type: formData.get("type"),
+    amount: formData.get("amount"),
+    category: formData.get("category"),
+    description: formData.get("description"),
+    date: formData.get("date"),
+  });
+
+  if (!validatedFields.success) {
+    const treeError = z.treeifyError(validatedFields.error);
+    return {
+      ...prevState,
+      errors: {
+        errors: treeError.errors,
+        properties: treeError.properties ?? {},
+      },
+      message: "Missing or invalid fields. Failed to edit category.",
+    };
+  }
+
+  const { title, type, amount, category, description, date } = validatedFields.data;
+
+  try {
+    await sql`
+      UPDATE transactions
+      SET
+        title = ${title},
+        amount = ${(type === "income" ? 1 : -1) * amount},
+        category_id = ${category === "empty" ? null : category},
+        description = ${description || null},
+        date = ${date}
+      WHERE id = ${id} AND user_id = ${session.user.id}
+    `;
+  } catch (error) {
+    return {
+      ...prevState,
+      message: "Database Error: Failed to edit transaction.",
+    };
+  }
+
+  revalidatePath("/dashboard/transactions");
+  redirect("/dashboard/transactions");
+}
+
 export async function deleteTransaction(id: string) {
   const session = await auth();
   if (!session?.user?.id) {
