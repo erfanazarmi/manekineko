@@ -23,6 +23,22 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 const ITEMS_PER_PAGE = 6;
+
+export async function fetchTransactionsPages() {
+  try {
+    const data = await sql`
+      SELECT COUNT(*) 
+      FROM transactions
+    `;
+
+    const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of transactions.");
+  }
+}
+
 export async function fetchTransactions(currentPage: number): Promise<TransactionsTable[]> {
   const session = await auth();
 
