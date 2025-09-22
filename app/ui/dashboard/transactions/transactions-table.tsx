@@ -2,8 +2,8 @@ import { fetchTransactions } from "@/app/lib/data";
 import { EditTransaction, DeleteTransaction } from "./buttons";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 
-export default async function TransactionsTable() {
-  const transactions = await fetchTransactions(1);
+export default async function TransactionsTable({currentPage}: {currentPage: number}) {
+  const transactions = await fetchTransactions(currentPage);
 
   return (
     <div className="min-w-full overflow-y-auto rounded-md bg-red-500">
