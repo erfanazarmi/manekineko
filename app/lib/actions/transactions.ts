@@ -151,5 +151,4 @@ export async function deleteTransaction(id: string) {
   }
   
   revalidatePath("/dashboard/transactions");
-  redirect("/dashboard/transactions");
 }
