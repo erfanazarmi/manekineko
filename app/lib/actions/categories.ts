@@ -53,7 +53,14 @@ export async function addCategory(
       INSERT INTO categories (user_id, name)
       VALUES (${session.user.id}, ${name})
     `;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return {
+        ...prevState,
+        message: "A category with this name already exists.",
+      };
+    }
+
     return {
       ...prevState,
       message: "Database Error: Failed to create category.",
@@ -98,7 +105,14 @@ export async function editCategory(
       SET name = ${name}
       WHERE id = ${id} AND user_id = ${session.user.id}
     `;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === "23505") {
+      return {
+        ...prevState,
+        message: "A category with this name already exists.",
+      };
+    }
+
     return {
       ...prevState,
       message: "Database Error: Failed to edit category.",
