@@ -1,7 +1,7 @@
 import { CategoryFormState, addCategory, editCategory, deleteCategory } from "@/app/lib/actions/categories";
 import { Category } from "@/app/lib/definitions";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, useActionState } from "react";
+import { useEffect, useActionState, useState } from "react";
 
 export type dialogStateType = {
   isOpen: boolean,
@@ -21,10 +21,29 @@ export default function CategoriesDialog({dialogState, close}: {dialogState: dia
   const initialStateDelete: CategoryFormState = { message: null, errors: { errors: [], properties: {} } };
   const [stateDelete, formActionDelete, isPendingDelete] = useActionState(deleteCategoryWithId, initialStateDelete);
 
+  const [message, setMessage] = useState<string | null>(null);
+
+  const handleClose = () => {
+    setMessage(null);
+    close();
+  }
+
   useEffect(() => {
-    if (!isPendingAdd && !isPedingEdit && !isPendingDelete)
+    if (!isPendingAdd && !isPedingEdit && !isPendingDelete) {
       if (stateAdd.message === "Successful" || stateEdit.message === "Successful" || stateDelete.message === "Successful")
-        close();
+        handleClose();
+      switch (dialogState.type) {
+        case "add":
+          setMessage(stateAdd.message || null);
+          break;
+        case "edit":
+          setMessage(stateEdit.message || null);
+          break;
+        case "delete":
+          setMessage(stateDelete.message || null);
+          break;
+      }
+    }
   }, [isPendingAdd, isPedingEdit, isPendingDelete]);
   
   if (!dialogState.isOpen) return null;
@@ -34,7 +53,7 @@ export default function CategoriesDialog({dialogState, close}: {dialogState: dia
       <div className="bg-background max-w-[400px] w-full p-8 m-4 rounded-md relative">
         <button
           type="button"
-          onClick={close}
+          onClick={handleClose}
           className="cursor-pointer block absolute right-3 top-3"
         >
           <XMarkIcon className="w-5" />
@@ -61,14 +80,8 @@ export default function CategoriesDialog({dialogState, close}: {dialogState: dia
           >
             {dialogState.type === "add" ? "Add" : dialogState.type === "edit" ? "Save" : "Delete"}
           </button>
-          {(dialogState.type === "add" && stateAdd.message && stateAdd.message !== "Successful") && (
-            <p className="text-center text-red-500 pt-6">{stateAdd.message}</p>
-          )}
-          {(dialogState.type === "edit" && stateEdit.message && stateEdit.message !== "Successful") && (
-            <p className="text-center text-red-500 pt-6">{stateEdit.message}</p>
-          )}
-          {(dialogState.type === "delete" && stateDelete.message && stateDelete.message !== "Successful") && (
-            <p className="text-center text-red-500 pt-6">{stateDelete.message}</p>
+          {(message && message !== "Successful") && (
+            <p className="text-center text-red-500 pt-6">{message}</p>
           )}
         </form>
       </div>
