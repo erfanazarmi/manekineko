@@ -1,6 +1,7 @@
 import { fetchTransactions } from "@/app/lib/data";
 import { EditTransaction, DeleteTransaction } from "./buttons";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
+import { formatNumberWithSpaces } from "@/app/lib/utils";
 
 export default async function TransactionsTable({currentPage}: {currentPage: number}) {
   const transactions = await fetchTransactions(currentPage);
@@ -33,7 +34,7 @@ export default async function TransactionsTable({currentPage}: {currentPage: num
                   ) : (
                     <PlusIcon className="w-4 text-green-500"/>
                   )}
-                  <div>{Math.abs(transaction.amount)}</div>
+                  <div>{formatNumberWithSpaces(Math.abs(transaction.amount))}</div>
                 </div>
               </td>
               <td className="p-5 whitespace-nowrap">
