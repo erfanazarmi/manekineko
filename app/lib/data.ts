@@ -95,3 +95,31 @@ export async function fetchTransactionById(id: string) {
     throw new Error("Failed to fetch transaction.");
   }
 }
+
+export async function fetchTransactionsTotalStats(from: string, to: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const data = await sql`
+    SELECT
+      SUM(amount) AS total_amount,
+      SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS total_income,
+      SUM(CASE WHEN amount < 0 THEN amount ELSE 0 END) AS total_expense
+    FROM transactions
+    WHERE user_id = ${session.user.id}
+    AND date BETWEEN ${from} AND ${to}
+  `;
+
+  return {
+      total_amount: data[0].total_amount ?? 0,
+      total_income: data[0].total_income ?? 0,
+      total_expense: Math.abs(data[0].total_expense ?? 0)
+    };
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch transactions total stats.");
+  }
+}
