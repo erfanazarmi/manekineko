@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getTotalStats } from "@/app/lib/actions/statistics";
 import { BanknotesIcon, PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/outline";
+import { formatNumberWithSpaces } from "@/app/lib/utils";
 
 export default function TotalStatsCards({ from, to }: { from: string; to: string }) {
   const [stats, setStats] = useState<any>(null);
@@ -22,7 +23,7 @@ export default function TotalStatsCards({ from, to }: { from: string; to: string
           Income
         </div>
         <div className="bg-background p-5 flex justify-center items-center text-2xl rounded-md lg:p-6">
-          {stats.total_income}
+          {formatNumberWithSpaces(stats.total_income)}
         </div>
       </div>
       <div className="flex-1 rounded-lg p-2 bg-neutral-200 dark:bg-neutral-900 lg:p-3">
@@ -31,7 +32,7 @@ export default function TotalStatsCards({ from, to }: { from: string; to: string
           Expense
         </div>
         <div className="bg-background p-5 flex justify-center items-center text-2xl rounded-md lg:p-6">
-          {stats.total_expense}
+          {formatNumberWithSpaces(stats.total_expense)}
         </div>
       </div>
       <div className="flex-1 rounded-lg p-2 bg-neutral-200 dark:bg-neutral-900 lg:p-3">
@@ -40,7 +41,7 @@ export default function TotalStatsCards({ from, to }: { from: string; to: string
           Remaining Balance
         </div>
         <div className="bg-background p-5 flex justify-center items-center text-2xl rounded-md lg:p-6">
-          {stats.total_amount}
+          {formatNumberWithSpaces(stats.total_amount)}
         </div>
       </div>
     </div>
