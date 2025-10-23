@@ -18,6 +18,45 @@ async function seedUsers() {
       verification_expires TIMESTAMP
     );
   `;
+  await sql`
+    CREATE TYPE calendar_type_enum AS ENUM ('gregorian', 'jalali');
+  `;
+  await sql`
+    CREATE TYPE language_enum AS ENUM ('en', 'fa');
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS user_settings (
+      user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+      calendar_type calendar_type_enum NOT NULL DEFAULT 'gregorian',
+      language language_enum NOT NULL DEFAULT 'en'
+    );
+  `;
+  await sql`
+    CREATE OR REPLACE FUNCTION create_default_settings()
+    RETURNS trigger AS $$
+    BEGIN
+      INSERT INTO user_settings (user_id, calendar_type, language)
+      VALUES (NEW.id, 'gregorian', 'en');
+      RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+  `;
+  await sql`
+    DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1
+        FROM pg_trigger
+        WHERE tgname = 'add_default_settings'
+      ) THEN
+        CREATE TRIGGER add_default_settings
+        AFTER INSERT ON users
+        FOR EACH ROW
+        EXECUTE FUNCTION create_default_settings();
+      END IF;
+    END;
+    $$;
+  `;
 
   const insertedUsers = await Promise.all(
     users.map(async (user) => {
@@ -29,6 +68,14 @@ async function seedUsers() {
       `;
     })
   );
+
+  await sql`
+    INSERT INTO user_settings (user_id, calendar_type)
+    SELECT u.id, 'gregorian'
+    FROM users u
+    LEFT JOIN user_settings s ON u.id = s.user_id
+    WHERE s.user_id IS NULL;
+  `;
 
   return insertedUsers;
 }
