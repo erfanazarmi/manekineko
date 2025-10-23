@@ -1,52 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TotalStatsCards from "./total-stats-cards";
-import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import persian from "react-date-object/calendars/persian";
+import persian_en from "react-date-object/locales/persian_en";
 
-export default function TotalStats() {
-  const now = new Date();
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+export default function TotalStats({ calendarType }: { calendarType: "gregorian" | "jalali" }) {
+  const [values, setValues] = useState<DateObject[]>([]);
 
-  const [from, setFrom] = useState(firstDayOfMonth.toLocaleDateString("en-CA"));
-  const [to, setTo] = useState(now.toLocaleDateString("en-CA"));
+  useEffect(() => {
+    if (calendarType === "gregorian") {
+      const now = new DateObject({ calendar: gregorian, locale: gregorian_en });
+      const firstDay = new DateObject({
+        calendar: gregorian,
+        locale: gregorian_en,
+      }).set({
+        year: now.year,
+        month: now.month.number,
+        day: 1,
+      });
+      setValues([firstDay, now]);
+    } else {
+      const now = new DateObject({ calendar: persian, locale: persian_en });
+      const firstDay = new DateObject({
+        calendar: persian,
+        locale: persian_en,
+      }).set({
+        year: now.year,
+        month: now.month.number,
+        day: 1,
+      });
+      setValues([firstDay, now]);
+    }
+  }, [calendarType]);
+
+  const fromGregorian = values?.[0]?.convert(gregorian, gregorian_en)?.format("YYYY-MM-DD") || "";
+  const toGregorian = values?.[1]?.convert(gregorian, gregorian_en)?.format("YYYY-MM-DD") || "";
 
   return (
-    <>
-      <div className="flex gap-2 mb-8 lg:gap-5">
-        <div className="flex gap-2">
-          <label htmlFor="from" className="hidden lg:block">From</label>
-          <input
-            type="date"
-            id="from"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-            className="
-              dark:[&::-webkit-calendar-picker-indicator]:invert
-              [&::-webkit-calendar-picker-indicator]:cursor-pointer
-              [&::-webkit-calendar-picker-indicator]:opacity-70
-              [&::-webkit-calendar-picker-indicator]:hover:opacity-100
-            "
-          />
-        </div>
-        <ArrowLongRightIcon className="w-6"/>
-        <div className="flex gap-2">
-          <label htmlFor="to" className="hidden lg:block">To</label>
-          <input
-            type="date"
-            id="to"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-            className="
-              dark:[&::-webkit-calendar-picker-indicator]:invert
-              [&::-webkit-calendar-picker-indicator]:cursor-pointer
-              [&::-webkit-calendar-picker-indicator]:opacity-70
-              [&::-webkit-calendar-picker-indicator]:hover:opacity-100
-            "
-          />
-        </div>
-      </div>
-      <TotalStatsCards from={from} to={to} />
-    </>
+    <div className="space-y-8">
+      <DatePicker
+        value={values}
+        onChange={setValues}
+        range
+        calendar={calendarType === "gregorian" ? gregorian : persian}
+        locale={calendarType === "gregorian" ? gregorian_en : persian_en}
+        inputClass="text-center border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+      />
+      <TotalStatsCards from={fromGregorian} to={toGregorian} />
+    </div>
   );
 }
