@@ -123,3 +123,29 @@ export async function fetchTransactionsTotalStats(from: string, to: string) {
     throw new Error("Failed to fetch transactions total stats.");
   }
 }
+
+export type UserSettings = {
+  calendar_type: "gregorian" | "jalali";
+  language: "en" | "fa";
+};
+
+export async function getUserSettings(): Promise<UserSettings> {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const result = await sql<UserSettings[]>`
+      SELECT calendar_type, language
+      FROM user_settings
+      WHERE user_id = ${session.user.id}
+    `;
+
+    return result[0] ?? { calendar_type: "gregorian", language: "en" };
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch user settings.");
+  }
+}
