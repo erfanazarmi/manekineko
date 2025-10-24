@@ -13,6 +13,12 @@ export default async function TransactionsTable({currentPage}: {currentPage: num
   const settings = await getUserSettings();
   const calendarType = settings.calendar_type;
 
+  if (transactions.length === 0) {
+    return (
+      <div>You have no transactions yet.</div>
+    )
+  }
+
   return (
     <div className="min-w-full overflow-y-auto rounded-md bg-red-500">
       <table className="min-w-full">
