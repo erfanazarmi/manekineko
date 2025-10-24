@@ -9,12 +9,12 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 const firstnameSchema = z
   .string()
-  .min(2, "First name must be at least 2 characters")
+  .min(1, "First name is required")
   .max(50, "First name must be less than 50 characters");
 
 const lastnameSchema = z
   .string()
-  .min(2, "Last name must be at least 2 characters")
+  .min(1, "Last name is required")
   .max(50, "Last name must be less than 50 characters");
 
 const registerSchema = z.object({
