@@ -20,10 +20,10 @@ export default async function TransactionsTable({currentPage}: {currentPage: num
   }
 
   return (
-    <div className="min-w-full overflow-y-auto rounded-md bg-red">
+    <div className="min-w-full overflow-y-auto rounded-md bg-neutral-300 dark:bg-neutral-800">
       <table className="min-w-full">
         <thead className="text-left">
-          <tr className="text-white">
+          <tr className="text-neutral-800 dark:text-neutral-100">
             <th className="px-5 py-2 font-bold">Title</th>
             <th className="px-5 py-2 font-bold">Amount</th>
             <th className="px-5 py-2 font-bold">Category</th>
