@@ -1,10 +1,17 @@
-import { fetchTransactions } from "@/app/lib/data";
+import { fetchTransactions, getUserSettings } from "@/app/lib/data";
 import { EditTransaction, DeleteTransaction } from "./buttons";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import { formatNumberWithSpaces } from "@/app/lib/utils";
+import { DateObject } from "react-multi-date-picker";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import persian from "react-date-object/calendars/persian";
+import persian_en from "react-date-object/locales/persian_en";
 
 export default async function TransactionsTable({currentPage}: {currentPage: number}) {
   const transactions = await fetchTransactions(currentPage);
+  const settings = await getUserSettings();
+  const calendarType = settings.calendar_type;
 
   return (
     <div className="min-w-full overflow-y-auto rounded-md bg-red-500">
@@ -41,7 +48,19 @@ export default async function TransactionsTable({currentPage}: {currentPage: num
                 {transaction.category_name}
               </td>
               <td className="p-5 whitespace-nowrap">
-                {new Date(transaction.date).toDateString()}
+                {calendarType === "gregorian" ? (
+                  new DateObject({
+                    date: new Date(transaction.date),
+                    calendar: gregorian,
+                    locale: gregorian_en
+                  }).format("YYYY/MM/DD")
+                ) : (
+                  new DateObject({
+                    date: new Date(transaction.date),
+                    calendar: persian,
+                    locale: persian_en
+                  }).format("YYYY/MM/DD")
+                )}
               </td>
               <td className="p-5 whitespace-nowrap max-w-xs">
                 <span className="truncate block max-w-[400px]" title={transaction.description!}>
