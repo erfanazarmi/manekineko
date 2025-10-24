@@ -76,12 +76,12 @@ export default function CategoriesDialog({dialogState, close}: {dialogState: dia
           )}
           <button
             type="submit"
-            className="cursor-pointer text-white font-bold block bg-red-500 rounded-md px-8 py-2 mx-auto mt-5"
+            className="cursor-pointer text-white font-bold block bg-red rounded-md px-8 py-2 mx-auto mt-5"
           >
             {dialogState.type === "add" ? "Add" : dialogState.type === "edit" ? "Save" : "Delete"}
           </button>
           {(message && message !== "Successful") && (
-            <p className="text-center text-red-500 pt-6">{message}</p>
+            <p className="text-center text-red pt-6">{message}</p>
           )}
         </form>
       </div>

@@ -55,7 +55,7 @@ export default function VerifyResultPage() {
             />
             <button
               type="button"
-              className="cursor-pointer block text-red-500 font-md underline m-auto"
+              className="cursor-pointer block text-red font-md underline m-auto"
               onClick={() => {
                 if (email) {
                   setResendStatus("Sending...");
@@ -87,7 +87,7 @@ export default function VerifyResultPage() {
 
         <Link
           href="/login"
-          className="cursor-pointer text-center block bg-red-500 rounded-md px-4 py-2 text-white font-bold"
+          className="cursor-pointer text-center block bg-red rounded-md px-4 py-2 text-white font-bold"
         >
           Go to login
         </Link>

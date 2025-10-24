@@ -10,7 +10,7 @@ export default function AlertBox({ message, close }: { message: string; close: (
         <button
           type="button"
           onClick={close}
-          className="cursor-pointer text-white font-bold block bg-red-500 rounded-md px-8 py-2 mx-auto mt-5"
+          className="cursor-pointer text-white font-bold block bg-red rounded-md px-8 py-2 mx-auto mt-5"
         >
           OK
         </button>

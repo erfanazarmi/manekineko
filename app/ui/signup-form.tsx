@@ -40,7 +40,7 @@ export default function SignupForm() {
     <form onSubmit={handleSubmit} action={formAction} className="space-y-10">
       <div>
         <label htmlFor="firstname" className="block">
-          <UserIcon className="size-5 text-red-500 inline mr-2" />
+          <UserIcon className="size-5 text-red inline mr-2" />
           First Name
         </label>
         <input
@@ -55,7 +55,7 @@ export default function SignupForm() {
       </div>
       <div>
         <label htmlFor="lastname" className="block">
-          <UserIcon className="size-5 text-red-500 inline mr-2" />
+          <UserIcon className="size-5 text-red inline mr-2" />
           Last Name
         </label>
         <input
@@ -70,7 +70,7 @@ export default function SignupForm() {
       </div>
       <div>
         <label htmlFor="email" className="block">
-          <AtSymbolIcon className="size-5 text-red-500 inline mr-2" />
+          <AtSymbolIcon className="size-5 text-red inline mr-2" />
           Email
         </label>
         <input
@@ -85,7 +85,7 @@ export default function SignupForm() {
       </div>
       <div>
         <label htmlFor="password" className="block">
-          <KeyIcon className="size-5 text-red-500 inline mr-2" />
+          <KeyIcon className="size-5 text-red inline mr-2" />
           Password
         </label>
         <div className="flex w-full">
@@ -113,7 +113,7 @@ export default function SignupForm() {
       </div>
       <div>
         <label htmlFor="repeatPassword" className="block">
-          <KeyIcon className="size-5 text-red-500 inline mr-2" />
+          <KeyIcon className="size-5 text-red inline mr-2" />
           Repeat Password
         </label>
         <input
@@ -128,17 +128,17 @@ export default function SignupForm() {
       </div>
       <button
         type="submit"
-        className="cursor-pointer w-full bg-red-500 rounded-md px-4 py-2 text-white font-bold"
+        className="cursor-pointer w-full bg-red rounded-md px-4 py-2 text-white font-bold"
         aria-disabled={isPending}
         disabled={isPending}
       >
         {isPending ? "Signing up..." : "Sign Up"}
       </button>
       {repeatPasswordError && (
-        <p className="text-sm text-center text-red-500">{repeatPasswordError}</p>
+        <p className="text-sm text-center text-red">{repeatPasswordError}</p>
       )}
       {state?.status === "error" && (
-        <div className="text-center text-red-500 text-sm space-y-2">
+        <div className="text-center text-red text-sm space-y-2">
           <p>{state.message}</p>
           {Array.isArray(state.issues) && (
             <ul className="list-none text-center">
@@ -150,7 +150,7 @@ export default function SignupForm() {
         </div>
       )}
       {state?.status === "success" && (
-        <div className="text-center text-red-500 text-sm space-y-2">
+        <div className="text-center text-red text-sm space-y-2">
           <p>{state.message}</p>
           <p>Please check your email and verify your account to log in.</p>
         </div>

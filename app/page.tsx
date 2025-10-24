@@ -18,10 +18,10 @@ export default function Home() {
             />
           </div>
           <div className="flex items-center gap-5 md:gap-10 mt-3 md:mt-0">
-            <Link className="hover:text-red-500" href="/login">
+            <Link className="hover:text-red" href="/login">
               Login
             </Link>
-            <Link className="hover:text-red-500" href="/signup">
+            <Link className="hover:text-red" href="/signup">
               Sign Up
             </Link>
           </div>
@@ -46,7 +46,7 @@ export default function Home() {
             <div className="mt-8 md:ml-8">
               <Link
                 href="/signup"
-                className="p-3 border rounded-sm hover:border-red-500 hover:text-red-500"
+                className="p-3 border rounded-sm hover:border-red hover:text-red"
               >
                 Get Started
               </Link>
@@ -55,7 +55,7 @@ export default function Home() {
 
           <div className="flex items-center justify-center my-10 lg:my-0">
             <div className="flex items-center justify-center">
-              <div className="rounded-full bg-red-500 w-[300px] h-[300px] lg:w-[340px] lg:h-[340px]"></div>
+              <div className="rounded-full bg-red w-[300px] h-[300px] lg:w-[340px] lg:h-[340px]"></div>
               <Image
                 src="/manekineko.png"
                 alt="manekineko"

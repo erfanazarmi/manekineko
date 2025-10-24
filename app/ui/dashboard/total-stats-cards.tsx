@@ -28,7 +28,7 @@ export default function TotalStatsCards({ from, to }: { from: string; to: string
       </div>
       <div className="flex-1 rounded-lg p-2 bg-neutral-200 dark:bg-neutral-900 lg:p-3">
         <div className="flex gap-2 font-medium text-sm p-1 pb-3 lg:p-2 lg:pb-3">
-          <MinusCircleIcon className="w-5 text-red-500" />
+          <MinusCircleIcon className="w-5 text-red" />
           Expense
         </div>
         <div className="bg-background p-5 flex justify-center items-center text-2xl rounded-md lg:p-6">

@@ -43,7 +43,7 @@ export default function LoginForm() {
     <form action={formAction} className="space-y-10">
       <div>
         <label htmlFor="emailInput" className="block">
-          <AtSymbolIcon className="size-5 text-red-500 inline mr-2" />
+          <AtSymbolIcon className="size-5 text-red inline mr-2" />
           Email
         </label>
         <input
@@ -58,7 +58,7 @@ export default function LoginForm() {
       </div>
       <div>
         <label htmlFor="passwordInput" className="block">
-          <KeyIcon className="size-5 text-red-500 inline mr-2" />
+          <KeyIcon className="size-5 text-red inline mr-2" />
           Password
         </label>
         <div className="flex w-full">
@@ -85,7 +85,7 @@ export default function LoginForm() {
       <input type="hidden" name="redirectTo" value={callbackUrl} />
       <button
         type="submit"
-        className="cursor-pointer w-full bg-red-500 rounded-md px-4 py-2 text-white font-bold"
+        className="cursor-pointer w-full bg-red rounded-md px-4 py-2 text-white font-bold"
         aria-disabled={isPending}
         disabled={isPending}
       >
@@ -97,11 +97,11 @@ export default function LoginForm() {
           aria-live="polite"
           aria-atomic="true"
         >
-        <div><p className="text-sm text-red-500">{errorMessage}</p></div>
+        <div><p className="text-sm text-red">{errorMessage}</p></div>
           {errorMessage === "Your email is not verified." && (
             <button
               type="button"
-              className="cursor-pointer block font-md text-red-500 underline"
+              className="cursor-pointer block font-md text-red underline"
               onClick={() => {
                 if (email) {
                   setResendStatus("Sending...");

@@ -20,7 +20,7 @@ export default async function TransactionsTable({currentPage}: {currentPage: num
   }
 
   return (
-    <div className="min-w-full overflow-y-auto rounded-md bg-red-500">
+    <div className="min-w-full overflow-y-auto rounded-md bg-red">
       <table className="min-w-full">
         <thead className="text-left">
           <tr className="text-white">
@@ -43,7 +43,7 @@ export default async function TransactionsTable({currentPage}: {currentPage: num
               <td className="p-5 whitespace-nowrap">
                 <div className="flex gap-2">
                   {transaction.amount < 0 ? (
-                    <MinusIcon className="w-4 text-red-500"/>
+                    <MinusIcon className="w-4 text-red"/>
                   ) : (
                     <PlusIcon className="w-4 text-green-500"/>
                   )}

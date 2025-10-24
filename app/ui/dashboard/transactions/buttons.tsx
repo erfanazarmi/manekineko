@@ -58,14 +58,14 @@ function DeleteDialog({close, transaction}: {close: () => void; transaction: Tra
           <button
             type="button"
             onClick={() => deleteTransaction(transaction.id)}
-            className="cursor-pointer font-bold text-white bg-red-500 rounded-md py-2 w-[90px]"
+            className="cursor-pointer font-bold text-white bg-red rounded-md py-2 w-[90px]"
           >
             Yes
           </button>
           <button
             type="button"
             onClick={close}
-            className="cursor-pointer font-bold text-red-500 bg-background border-1 border-red-500 rounded-md py-2 w-[90px]"
+            className="cursor-pointer font-bold text-red bg-background border-1 border-red rounded-md py-2 w-[90px]"
           >
             Cancel
           </button>

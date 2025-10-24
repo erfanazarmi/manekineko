@@ -100,7 +100,7 @@ function PaginationNumber({
   const className = clsx(
     "flex h-8 w-8 items-center justify-center text-sm rounded-md",
     {
-      "bg-red-500 text-white font-bold": isActive,
+      "bg-red text-white font-bold": isActive,
     }
   );
 

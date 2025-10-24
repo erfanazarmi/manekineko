@@ -139,7 +139,7 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
               aria-describedby="amount-error"
               required
             />
-            <p className="text-red-500" id="amount-error" aria-live="polite" aria-atomic="true">
+            <p className="text-red" id="amount-error" aria-live="polite" aria-atomic="true">
               {state.errors?.properties?.amount?.errors}
             </p>
           </div>
@@ -156,7 +156,7 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
               className="w-full p-2 border-1 border-gray-400 rounded-md focus:outline-1 focus:outline-black dark:focus:outline-white"
               aria-describedby="description-error"
             />
-            <p className="text-red-500" id="description-error" aria-live="polite" aria-atomic="true">
+            <p className="text-red" id="description-error" aria-live="polite" aria-atomic="true">
               {state.errors?.properties?.description?.errors}
             </p>
           </div>
@@ -182,7 +182,7 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
 
           <button
             type="submit"
-            className="cursor-pointer block p-2 bg-red-500 text-white font-bold rounded-md mt-10"
+            className="cursor-pointer block p-2 bg-red text-white font-bold rounded-md mt-10"
             aria-disabled={isPending}
             disabled={isPending}
           >
@@ -190,7 +190,7 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
           </button>
 
           {state.message !== "Transaction created successfully" && (
-            <p className="text-center text-red-500" aria-live="polite" aria-atomic="true">
+            <p className="text-center text-red" aria-live="polite" aria-atomic="true">
               {state.message}
             </p>
           )}
