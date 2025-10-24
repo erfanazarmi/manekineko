@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { fetchTransactionById, getCategories } from "@/app/lib/data";
 import EditForm from "@/app/ui/dashboard/transactions/edit-form";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
@@ -17,3 +18,7 @@ export default async function Page({params}: {params: Promise<{ id: string }>}) 
     </>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Edit Transaction",
+};

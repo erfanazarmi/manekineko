@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import TotalStats from "@/app/ui/dashboard/total-stats";
 import { getUserSettings } from "@/app/lib/data";
 
@@ -11,3 +12,7 @@ export default async function Page() {
     </>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Home",
+};

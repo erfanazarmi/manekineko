@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import TransactionsTable from "@/app/ui/dashboard/transactions/transactions-table";
 import Pagination from "@/app/ui/dashboard/transactions/pagination";
 import { fetchTransactionsPages } from '@/app/lib/data';
@@ -20,3 +21,7 @@ export default async function Page(props: {searchParams?: Promise<{page?: string
     </main>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Transactions",
+};

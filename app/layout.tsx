@@ -1,4 +1,13 @@
 import "./globals.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Manekineko",
+    default: "Manekineko",
+  },
+  description: "A finance management site for tracking income and expenses.",
+};
 
 export default function RootLayout({
   children,

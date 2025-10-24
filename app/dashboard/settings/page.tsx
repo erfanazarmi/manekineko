@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { getCategories, getUserSettings } from "@/app/lib/data";
 import CalendarSetting from "@/app/ui/dashboard/settings/calendar-setting";
 import CategoriesSetting from "@/app/ui/dashboard/settings/categories-setting";
@@ -17,3 +18,7 @@ export default async function Page() {
     </main>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Settings",
+};

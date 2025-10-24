@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import SignupForm from "../ui/signup-form";
@@ -32,3 +33,7 @@ export default function Page() {
     </main>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Sign Up",
+};
