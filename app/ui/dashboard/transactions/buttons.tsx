@@ -3,6 +3,7 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { TransactionsTable } from "@/app/lib/definitions";
 import { deleteTransaction } from "@/app/lib/actions/transactions";
+import { formatNumberWithSpaces } from "@/app/lib/utils";
 import { useState } from "react";
 import { redirect } from "next/navigation";
 
@@ -48,7 +49,7 @@ function DeleteDialog({close, transaction}: {close: () => void; transaction: Tra
               </tr>
               <tr>
                 <td className="text-right text-sm px-2">Amount</td>
-                <td className="font-bold px-2">{Math.abs(transaction.amount)}</td>
+                <td className="font-bold px-2">{formatNumberWithSpaces(Math.abs(transaction.amount))}</td>
               </tr>
             </tbody>
           </table>
