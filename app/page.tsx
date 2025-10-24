@@ -6,8 +6,8 @@ export default function Home() {
     <div className="min-h-dvh flex flex-col">
       <header className="w-full lg:absolute">
         <div className="flex flex-col-reverse pl-6 pr-10 py-2 md:flex-row md:justify-between">
-          <div className="flex flex-col items-center justify-center gap-2 m-5 md:flex-row md:justify-start md:m-0">
-            <h1 className="text-[2.2rem] uppercase">Maneki Neko</h1>
+          <div className="flex flex-col-reverse items-center justify-center gap-2 my-10 md:my-2 md:flex-row md:justify-start md:m-0">
+            <h1 className="text-[2.2rem] text-center uppercase">Maneki Neko</h1>
             <Image
               src="/paw.svg"
               alt=""
@@ -17,7 +17,7 @@ export default function Home() {
               className="dark:invert"
             />
           </div>
-          <div className="flex items-center gap-10 mt-3 md:mt-0">
+          <div className="flex items-center gap-5 md:gap-10 mt-3 md:mt-0">
             <Link className="hover:text-red-500" href="/login">
               Login
             </Link>
@@ -28,9 +28,9 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex grow">
-        <div className="w-full md:grid md:grid-cols-2 lg:grid lg:grid-cols-3">
-          <div className="flex flex-col justify-center items-center text-center p-10 md:items-start md:text-left">
+      <main className="flex grow justify-center">
+        <div className="md:grid md:grid-cols-2 lg:grid lg:grid-cols-3 md:gap-15">
+          <div className="flex flex-col justify-center items-center text-center md:pl-10 lg:pr-10 md:items-start md:text-left">
             <div className="py-2 md:pl-8 lg:border-l">
               <p className="text-2xl mb-5">
                 Keep track of your
@@ -45,29 +45,29 @@ export default function Home() {
             </div>
             <div className="mt-8 md:ml-8">
               <Link
-                href="/features"
+                href="/signup"
                 className="p-3 border rounded-sm hover:border-red-500 hover:text-red-500"
               >
-                See what you can do
+                Get Started
               </Link>
             </div>
           </div>
 
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center my-10 lg:my-0">
             <div className="flex items-center justify-center">
-              <div className="rounded-full bg-red-500 w-[340px] h-[340px]"></div>
+              <div className="rounded-full bg-red-500 w-[300px] h-[300px] lg:w-[340px] lg:h-[340px]"></div>
               <Image
                 src="/manekineko.png"
                 alt="manekineko"
                 width={340}
                 height={255}
                 priority
-                className="absolute"
+                className="absolute max-w-74 lg:max-w-140 h-auto"
               />
             </div>
           </div>
 
-          <div className="bg-gray-200 dark:bg-[#050505] col-span-2 flex items-center justify-center p-10 mt-10 lg:col-span-1 lg:justify-end lg:p-20 lg:bg-transparent lg:dark:bg-transparent">
+          <div className="bg-gray-200/60 dark:bg-[#050505]/60 col-span-2 flex items-center justify-center px-10 py-15 md:py-10 mt-20 md:mt-0 lg:col-span-1 lg:justify-end lg:p-20 lg:bg-transparent lg:dark:bg-transparent">
             <div className="w-full text-center text-lg md:w-[80%] lg:w-[160px] lg:text-justify">
               <p className="mb-4">
                 <strong className="text-2xl">招き猫</strong>
