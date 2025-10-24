@@ -11,6 +11,13 @@ export default function SignupForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [repeatPasswordError, setRepeatPasswordError] = useState("");
   const [state, formAction, isPending] = useActionState(register, initialState);
+  const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    repeatPassword: ""
+  });
 
   const handlePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -32,54 +39,62 @@ export default function SignupForm() {
   return (
     <form onSubmit={handleSubmit} action={formAction} className="space-y-10">
       <div>
-        <label htmlFor="firstnameInput" className="block">
+        <label htmlFor="firstname" className="block">
           <UserIcon className="size-5 text-red-500 inline mr-2" />
           First Name
         </label>
         <input
           type="text"
-          id="firstnameInput"
+          id="firstname"
           name="firstname"
+          value={formData.firstname}
+          onChange={(e) => setFormData({...formData, firstname: e.target.value})}
           className="w-full border-b outline-none py-1 mt-1"
           required
         />
       </div>
       <div>
-        <label htmlFor="lastnameInput" className="block">
+        <label htmlFor="lastname" className="block">
           <UserIcon className="size-5 text-red-500 inline mr-2" />
           Last Name
         </label>
         <input
           type="text"
-          id="lastnameInput"
+          id="lastname"
           name="lastname"
+          value={formData.lastname}
+          onChange={(e) => setFormData({...formData, lastname: e.target.value})}
           className="w-full border-b outline-none py-1 mt-1"
           required
         />
       </div>
       <div>
-        <label htmlFor="emailInput" className="block">
+        <label htmlFor="email" className="block">
           <AtSymbolIcon className="size-5 text-red-500 inline mr-2" />
           Email
         </label>
         <input
           type="email"
-          id="emailInput"
+          id="email"
           name="email"
+          value={formData.email}
+          onChange={(e) => setFormData({...formData, email: e.target.value})}
           className="w-full border-b outline-none py-1 mt-1"
           required
         />
       </div>
       <div>
-        <label htmlFor="passwordInput" className="block">
+        <label htmlFor="password" className="block">
           <KeyIcon className="size-5 text-red-500 inline mr-2" />
           Password
         </label>
         <div className="flex w-full">
           <input
             type={isPasswordVisible ? "text" : "password"}
-            id="passwordInput"
+            id="password"
             name="password"
+            value={formData.password}
+            onChange={(e) => setFormData({...formData, password: e.target.value})}
             className="w-full border-b outline-none py-1 mt-1"
             required
           />
@@ -97,14 +112,16 @@ export default function SignupForm() {
         </div>
       </div>
       <div>
-        <label htmlFor="repeatPasswordInput" className="block">
+        <label htmlFor="repeatPassword" className="block">
           <KeyIcon className="size-5 text-red-500 inline mr-2" />
           Repeat Password
         </label>
         <input
           type="password"
-          id="repeatPasswordInput"
+          id="repeatPassword"
           name="repeatPassword"
+          value={formData.repeatPassword}
+          onChange={(e) => setFormData({...formData, repeatPassword: e.target.value})}
           className="w-full border-b outline-none py-1 mt-1"
           required
         />
@@ -124,7 +141,7 @@ export default function SignupForm() {
         <div className="text-center text-red-500 text-sm space-y-2">
           <p>{state.message}</p>
           {Array.isArray(state.issues) && (
-            <ul className="list-disc text-left pl-5">
+            <ul className="list-none text-center">
               {state.issues.map((issue: any, i: number) => (
                 <li key={i}>{issue.message}</li>
               ))}
