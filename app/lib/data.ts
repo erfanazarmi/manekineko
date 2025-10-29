@@ -25,10 +25,15 @@ export async function getCategories(): Promise<Category[]> {
 const ITEMS_PER_PAGE = 6;
 
 export async function fetchTransactionsPages() {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
   try {
     const data = await sql`
-      SELECT COUNT(*) 
-      FROM transactions
+      SELECT COUNT(*) FROM transactions WHERE user_id = ${session.user.id}
     `;
 
     const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
