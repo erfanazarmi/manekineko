@@ -3,8 +3,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Manekineko",
-    default: "Manekineko",
+    template: "%s | Maneki Neko",
+    default: "Maneki Neko",
   },
   description: "A finance management site for tracking income and expenses.",
 };
