@@ -9,6 +9,7 @@ const oAuth2Client = new google.auth.OAuth2(
 
 const url = oAuth2Client.generateAuthUrl({
   access_type: "offline",
+  prompt: "consent",
   scope: ["https://mail.google.com/"],
   redirect_uri: "http://localhost:3000/oauth2callback",
 });
