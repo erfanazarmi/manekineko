@@ -15,7 +15,7 @@ async function seedUsers() {
       password TEXT NOT NULL,
       email_verified BOOLEAN DEFAULT false,
       verification_token TEXT,
-      verification_expires TIMESTAMP
+      verification_expires TIMESTAMPTZ
     );
   `;
   await sql`
