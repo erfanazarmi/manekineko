@@ -16,12 +16,19 @@ export async function GET(request: Request) {
   }
 
   const [user] = await sql`
-    SELECT * FROM users 
-    WHERE verification_token = ${token} 
-      AND verification_expires > NOW()
+    SELECT id, verification_token, verification_expires
+    FROM users
+    WHERE verification_token = ${token}
   `;
 
   if (!user) {
+    return Response.redirect(`${redirectUrl}/verify-result?status=notfound`);
+  }
+
+  const expires = new Date(user.verification_expires).getTime();
+  const now = Date.now();
+
+  if (expires < now) {
     return Response.redirect(`${redirectUrl}/verify-result?status=expired`);
   }
 
