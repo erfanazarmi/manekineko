@@ -19,10 +19,22 @@ async function seedUsers() {
     );
   `;
   await sql`
-    CREATE TYPE calendar_type_enum AS ENUM ('gregorian', 'jalali');
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'calendar_type_enum') THEN
+        CREATE TYPE calendar_type_enum AS ENUM ('gregorian', 'jalali');
+      END IF;
+    END
+    $$;
   `;
   await sql`
-    CREATE TYPE language_enum AS ENUM ('en', 'fa');
+    DO $$
+    BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'language_enum') THEN
+        CREATE TYPE language_enum AS ENUM ('en', 'fa');
+      END IF;
+    END
+    $$;
   `;
   await sql`
     CREATE TABLE IF NOT EXISTS user_settings (
