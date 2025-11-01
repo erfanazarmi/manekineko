@@ -4,6 +4,7 @@ import { useState, useActionState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { AtSymbolIcon, KeyIcon, UserIcon } from "@heroicons/react/24/outline";
 import { register, type RegisterState } from "../lib/actions/register";
+import Link from "next/link";
 
 const initialState: RegisterState = { status: "idle" };
 
@@ -151,8 +152,12 @@ export default function SignupForm() {
       )}
       {state?.status === "success" && (
         <div className="text-center text-red text-sm space-y-2">
-          <p>{state.message}</p>
-          <p>Please check your email and verify your account to log in.</p>
+          <p>Account created successfully!<br />Please check your email to verify your account.</p>
+          <p>
+            <b>Didn’t get the verification email?</b>
+            <br />
+            <Link href="/login" className="underline">Log in</Link> to resend it.
+          </p>
         </div>
       )}
     </form>
