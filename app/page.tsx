@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="min-h-dvh flex flex-col">
       <header className="w-full lg:absolute">
-        <div className="flex flex-col-reverse pl-6 pr-10 py-2 md:flex-row md:justify-between">
+        <div className="flex flex-col-reverse px-6 py-2 md:pr-10 md:flex-row md:justify-between">
           <div className="flex flex-col-reverse items-center justify-center gap-2 my-10 md:my-2 md:flex-row md:justify-start md:m-0">
             <h1 className="text-[2.2rem] text-center uppercase">Maneki Neko</h1>
             <Image
