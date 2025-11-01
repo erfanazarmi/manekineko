@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     default: "Maneki Neko",
   },
   description: "A finance management site for tracking income and expenses.",
+  metadataBase: new URL("https://manekineko.netlify.app"),
 };
 
 export default function RootLayout({
