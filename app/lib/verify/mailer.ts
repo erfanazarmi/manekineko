@@ -6,7 +6,7 @@ export async function sendVerificationEmail(email: string, token: string) {
     ? "https://manekineko.netlify.app"
     : "http://localhost:3000";
 
-  const verifyUrl = `${redirectUrl}/api/verification/verify?token=${token}`;
+  const verifyUrl = `${redirectUrl}/verify-email?token=${token}`;
 
   const transporter = nodemailer.createTransport({
     service: "gmail",

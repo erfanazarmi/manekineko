@@ -2,20 +2,13 @@ import postgres from "postgres";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const token = searchParams.get("token");
-
-  const isProd = process.env.NODE_ENV === "production";
-  const redirectUrl = isProd
-    ? "https://manekineko.netlify.app"
-    : "http://localhost:3000";
+export async function POST(request: Request) {
+  const { token } = await request.json();
 
   console.log("[DEBUG] Incoming token from URL:", token);
 
   if (!token) {
-    console.log("[DEBUG] No token provided in URL.");
-    return Response.redirect(`${redirectUrl}/verify-result?status=invalid`);
+    return new Response(JSON.stringify({ status: "invalid" }), { status: 400 });
   }
 
   interface User {
@@ -41,7 +34,7 @@ export async function GET(request: Request) {
 
     if (!user) {
       console.log("[DEBUG] User not found in DB for token:", token);
-      return Response.redirect(`${redirectUrl}/verify-result?status=notfound`);
+      return new Response(JSON.stringify({ status: "notfound" }), { status: 404 });
     }
 
     console.log("[DEBUG] User found:", user);
@@ -56,7 +49,7 @@ export async function GET(request: Request) {
 
     if (expires < now) {
       console.log("[DEBUG] Token is expired!");
-      return Response.redirect(`${redirectUrl}/verify-result?status=expired`);
+      return new Response(JSON.stringify({ status: "expired" }), { status: 410 });
     }
 
     console.log("[DEBUG] Token is valid, updating user...");
@@ -70,10 +63,9 @@ export async function GET(request: Request) {
     `;
 
     console.log("[DEBUG] User updated successfully.");
-
+    return new Response(JSON.stringify({ status: "success" }), { status: 200 });
   } catch (error) {
     console.error("[ERROR] Verification process failed:", error);
+    return new Response(JSON.stringify({ status: "error" }), { status: 500 });
   }
-
-  return Response.redirect(`${redirectUrl}/verify-result?status=success`);
 }
