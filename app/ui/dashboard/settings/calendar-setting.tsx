@@ -11,7 +11,7 @@ export default function CalendarSetting({calendarType}: {calendarType: "gregoria
   return (
     <div className="flex flex-wrap gap-2">
       <button
-        className="flex items-center gap-2 cursor-pointer px-4 py-2 bg-gray-200 rounded"
+        className="flex items-center gap-2 cursor-pointer px-4 py-2 bg-gray-200 rounded dark:bg-neutral-800"
         onClick={async () => {
           try {
             await setCalendarType("gregorian");
@@ -25,7 +25,7 @@ export default function CalendarSetting({calendarType}: {calendarType: "gregoria
       </button>
 
       <button
-        className="flex items-center gap-2 cursor-pointer px-4 py-2 bg-gray-200 rounded"
+        className="flex items-center gap-2 cursor-pointer px-4 py-2 bg-gray-200 rounded dark:bg-neutral-800"
         onClick={async () => {
           try {
             await setCalendarType("jalali");
