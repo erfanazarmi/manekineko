@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import postgres from "postgres";
-import { Category, Transaction, TransactionsTable } from "./definitions";
+import { Category, Transaction, TransactionsTable, UserSettings } from "./definitions";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -128,11 +128,6 @@ export async function fetchTransactionsTotalStats(from: string, to: string) {
     throw new Error("Failed to fetch transactions total stats.");
   }
 }
-
-export type UserSettings = {
-  calendar_type: "gregorian" | "jalali";
-  language: "en" | "fa";
-};
 
 export async function getUserSettings(): Promise<UserSettings> {
   const session = await auth();

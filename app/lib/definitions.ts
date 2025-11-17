@@ -35,3 +35,8 @@ export type TransactionsTable = {
   description: string | null;
   date: string;
 }
+
+export type UserSettings = {
+  calendar_type: "gregorian" | "jalali";
+  language: "en" | "fa";
+};
