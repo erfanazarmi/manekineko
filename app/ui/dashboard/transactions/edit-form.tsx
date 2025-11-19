@@ -2,9 +2,19 @@
 
 import { Category, Transaction } from "@/app/lib/definitions";
 import { editTransaction, TransactionFormState } from "@/app/lib/actions/transactions";
-import { useState, useActionState } from "react";
+import { useState, useActionState, useEffect } from "react";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import persian from "react-date-object/calendars/persian";
+import persian_en from "react-date-object/locales/persian_en";
 
-export default function EditForm({transaction, categories}: {transaction: Transaction; categories: Category[]}) {
+export default function EditForm(
+  { transaction, categories, calendarType }:
+  { transaction: Transaction; categories: Category[]; calendarType: "gregorian" | "jalali" }
+) {
+  const [date, setDate] = useState<DateObject>();
+
   const initialState: TransactionFormState = { message: null, errors: { errors: [], properties: {} } };
   const editTransactionWithId = editTransaction.bind(null, transaction.id);
   const [state, formAction, isPending] = useActionState(editTransactionWithId, initialState);
@@ -22,6 +32,24 @@ export default function EditForm({transaction, categories}: {transaction: Transa
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({...formData, [e.target.name]: e.target.value});
   }
+
+  useEffect(() => {
+    if (calendarType === "gregorian") {
+      const transactionDate = new DateObject({
+        calendar: gregorian,
+        locale: gregorian_en,
+        date: transaction.date
+      });
+      setDate(transactionDate);
+    } else {
+      const transactionDate = new DateObject({
+        calendar: persian,
+        locale: persian_en,
+        date: new DateObject(transaction.date).convert(persian, persian_en)?.format("YYYY-MM-DD")
+      });
+      setDate(transactionDate);
+    }
+  }, [calendarType]);
 
   return (
     <div className="w-full flex justify-center">
@@ -140,20 +168,19 @@ export default function EditForm({transaction, categories}: {transaction: Transa
             <label htmlFor="date" className="pr-3">
               Date
             </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={e => handleChange(e)}
-              className="border-1 p-1 border-gray-400 rounded-md focus:outline-1 focus:outline-black dark:focus:outline-white
-                  dark:[&::-webkit-calendar-picker-indicator]:invert
-                  [&::-webkit-calendar-picker-indicator]:cursor-pointer
-                  [&::-webkit-calendar-picker-indicator]:opacity-70
-                  [&::-webkit-calendar-picker-indicator]:hover:opacity-100
-                "
+            <DatePicker
+              value={date}
+              onChange={(d) => {
+                const formatted = d?.convert(gregorian, gregorian_en)?.format("YYYY-MM-DD") || transaction.date;
+                setFormData({...formData, date: formatted});
+                setDate(d || undefined);
+              }}
+              calendar={calendarType === "gregorian" ? gregorian : persian}
+              locale={calendarType === "gregorian" ? gregorian_en : persian_en}
+              inputClass="text-center border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
               required
             />
+            <input type="hidden" name="date" value={formData.date} required />
           </div>
 
           <button
