@@ -2,6 +2,7 @@
 
 import { Category, Transaction } from "@/app/lib/definitions";
 import { editTransaction, TransactionFormState } from "@/app/lib/actions/transactions";
+import { formatNumberWithSpaces } from "@/app/lib/utils";
 import { useState, useActionState, useEffect } from "react";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -23,7 +24,8 @@ export default function EditForm(
     type: transaction.amount > 0 ? "income" : "expense",
     category: transaction.category_id || "empty",
     title: transaction.title,
-    amount: Math.abs(transaction.amount),
+    amount: Math.abs(transaction.amount).toString(),
+    amount2: Math.abs(transaction.amount).toString(),
     description: transaction.description || "",
     date: transaction.date,
   }
@@ -31,6 +33,9 @@ export default function EditForm(
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({...formData, [e.target.name]: e.target.value});
+    if(e.target.name === "amount2") {
+      setFormData({...formData, [e.target.name]: e.target.value, ["amount"]: e.target.value.replace(/\s+/g, '')});
+    }
   }
 
   useEffect(() => {
@@ -50,6 +55,10 @@ export default function EditForm(
       setDate(transactionDate);
     }
   }, [calendarType]);
+
+  useEffect(() => {
+    setFormData({...formData, ["amount2"]: formatNumberWithSpaces(formData.amount2.replace(/\s+/g, ''))});
+  }, [formData.amount2])
 
   return (
     <div className="w-full flex justify-center">
@@ -129,10 +138,11 @@ export default function EditForm(
               Amount
             </label>
             <input
-              type="number"
-              id="amount"
-              name="amount"
-              value={formData.amount}
+              type="text"
+              inputMode="numeric"
+              id="amount2"
+              name="amount2"
+              value={formData.amount2}
               onChange={e => handleChange(e)}
               className="w-full p-2 border-1 border-gray-400 rounded-md focus:outline-1 focus:outline-black dark:focus:outline-white
                   [appearance:textfield]
@@ -141,6 +151,12 @@ export default function EditForm(
                 "
               aria-describedby="amount-error"
               required
+            />
+            <input
+              type="hidden"
+              id="amount"
+              name="amount"
+              value={formData.amount}
             />
             <p className="text-red" id="amount-error" aria-live="polite" aria-atomic="true">
               {state.errors?.properties?.amount?.errors}
