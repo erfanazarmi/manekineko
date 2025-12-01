@@ -12,7 +12,10 @@ import persian_en from "react-date-object/locales/persian_en";
 
 export default function AddForm({ categories, calendarType }: { categories: Category[]; calendarType: "gregorian" | "jalali" }) {
   const today = new DateObject().format("YYYY-MM-DD");
-  const [date, setDate] = useState<DateObject>();
+  const now = calendarType === "gregorian" ?
+    new DateObject({ calendar: gregorian, locale: gregorian_en }) :
+    new DateObject({ calendar: persian, locale: persian_en });
+  const [date, setDate] = useState<DateObject | undefined>(now);
 
   const initialState: TransactionFormState = { message: null, errors: { errors: [], properties: {} } };
   const [state, formAction, isPending] = useActionState(addTransaction, initialState);
@@ -35,20 +38,11 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
 
   useEffect(() => {
     if(!isPending && state.message === "Transaction created successfully") {
+      setDate(now);
       setFormData(initialFormData);
       setIsAlertBoxOpen(true);
     }
   }, [isPending, state.message]);
-
-  useEffect(() => {
-    if (calendarType === "gregorian") {
-      const now = new DateObject({ calendar: gregorian, locale: gregorian_en });
-      setDate(now);
-    } else {
-      const now = new DateObject({ calendar: persian, locale: persian_en });
-      setDate(now);
-    }
-  }, [calendarType]);
 
   return (
     <div className="w-full flex justify-center">
