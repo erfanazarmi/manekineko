@@ -2,6 +2,7 @@
 
 import { Category } from "@/app/lib/definitions";
 import { addTransaction, TransactionFormState } from "@/app/lib/actions/transactions";
+import { formatNumberWithSpaces } from "@/app/lib/utils";
 import { useState, useEffect, useActionState } from "react";
 import AlertBox from "../alert-box";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -25,6 +26,7 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
     category: "empty",
     title: "",
     amount: "",
+    amount2: "",
     description: "",
     date: today,
   }
@@ -34,6 +36,9 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({...formData, [e.target.name]: e.target.value});
+    if(e.target.name === "amount2") {
+      setFormData({...formData, [e.target.name]: e.target.value, ["amount"]: e.target.value.replace(/\s+/g, '')});
+    }
   }
 
   useEffect(() => {
@@ -43,6 +48,10 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
       setIsAlertBoxOpen(true);
     }
   }, [isPending, state.message]);
+
+  useEffect(() => {
+    setFormData({...formData, ["amount2"]: formatNumberWithSpaces(formData.amount2.replace(/\s+/g, ''))});
+  }, [formData.amount2])
 
   return (
     <div className="w-full flex justify-center">
@@ -120,10 +129,11 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
               Amount
             </label>
             <input
-              type="number"
-              id="amount"
-              name="amount"
-              value={formData.amount}
+              type="text"
+              inputMode="numeric"
+              id="amount2"
+              name="amount2"
+              value={formData.amount2}
               onChange={e => handleChange(e)}
               className="w-full p-2 border-1 border-gray-400 rounded-md focus:outline-1 focus:outline-black dark:focus:outline-white
                 [appearance:textfield]
@@ -132,6 +142,12 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
               "
               aria-describedby="amount-error"
               required
+            />
+            <input
+              type="hidden"
+              id="amount"
+              name="amount"
+              value={formData.amount}
             />
             <p className="text-red" id="amount-error" aria-live="polite" aria-atomic="true">
               {state.errors?.properties?.amount?.errors}
