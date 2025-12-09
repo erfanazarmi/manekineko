@@ -8,8 +8,8 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import persian from "react-date-object/calendars/persian";
 import persian_en from "react-date-object/locales/persian_en";
 
-export default async function TransactionsTable({currentPage}: {currentPage: number}) {
-  const transactions = await fetchTransactions(currentPage);
+export default async function TransactionsTable({currentPage, sortBy}: {currentPage: number; sortBy: string}) {
+  const transactions = await fetchTransactions(currentPage, sortBy);
   const settings = await getUserSettings();
   const calendarType = settings.calendar_type;
 

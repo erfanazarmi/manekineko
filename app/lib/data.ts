@@ -44,7 +44,7 @@ export async function fetchTransactionsPages() {
   }
 }
 
-export async function fetchTransactions(currentPage: number): Promise<TransactionsTable[]> {
+export async function fetchTransactions(currentPage: number, sortBy: string): Promise<TransactionsTable[]> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -53,22 +53,120 @@ export async function fetchTransactions(currentPage: number): Promise<Transactio
 
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
+  let sort;
+  if(sortBy === "date_newest" || sortBy === "date_oldest") {
+    sort = "date";
+  } else if (sortBy === "created_at_newest" || sortBy === "created_at_oldest") {
+    sort = "created_at"
+  } else {
+    sort = "amount"
+  }
+
+  let order = (sortBy === "date_newest" || sortBy === "created_at_newest" || sortBy === "amount_highest") ? "DESC" : "ASC";
+
   try {
-    const transactions = await sql<TransactionsTable[]>`
-      SELECT
-        transactions.id,
-        transactions.title,
-        transactions.amount,
-        transactions.description,
-        transactions.date,
-        transactions.category_id,
-        categories.name AS category_name
-      FROM transactions
-      LEFT JOIN categories ON transactions.category_id = categories.id
-      WHERE transactions.user_id = ${session.user.id}
-      ORDER BY transactions.created_at DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `;
+    let transactions;
+    if (order === "DESC") {
+      if (sort === "date") {
+        transactions = await sql<TransactionsTable[]>`
+          SELECT
+            transactions.id,
+            transactions.title,
+            transactions.amount,
+            transactions.description,
+            transactions.date,
+            transactions.category_id,
+            categories.name AS category_name
+          FROM transactions
+          LEFT JOIN categories ON transactions.category_id = categories.id
+          WHERE transactions.user_id = ${session.user.id}
+          ORDER BY transactions.date DESC
+          LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
+      } else if (sort === "created_at") {
+        transactions = await sql<TransactionsTable[]>`
+          SELECT
+            transactions.id,
+            transactions.title,
+            transactions.amount,
+            transactions.description,
+            transactions.date,
+            transactions.category_id,
+            categories.name AS category_name
+          FROM transactions
+          LEFT JOIN categories ON transactions.category_id = categories.id
+          WHERE transactions.user_id = ${session.user.id}
+          ORDER BY transactions.created_at DESC
+          LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
+      } else {
+        transactions = await sql<TransactionsTable[]>`
+          SELECT
+            transactions.id,
+            transactions.title,
+            transactions.amount,
+            transactions.description,
+            transactions.date,
+            transactions.category_id,
+            categories.name AS category_name
+          FROM transactions
+          LEFT JOIN categories ON transactions.category_id = categories.id
+          WHERE transactions.user_id = ${session.user.id}
+          ORDER BY ABS(transactions.amount) DESC
+          LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
+      }
+    } else {
+      if (sort === "date") {
+        transactions = await sql<TransactionsTable[]>`
+          SELECT
+            transactions.id,
+            transactions.title,
+            transactions.amount,
+            transactions.description,
+            transactions.date,
+            transactions.category_id,
+            categories.name AS category_name
+          FROM transactions
+          LEFT JOIN categories ON transactions.category_id = categories.id
+          WHERE transactions.user_id = ${session.user.id}
+          ORDER BY transactions.date ASC
+          LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
+      } else if (sort === "created_at") {
+        transactions = await sql<TransactionsTable[]>`
+          SELECT
+            transactions.id,
+            transactions.title,
+            transactions.amount,
+            transactions.description,
+            transactions.date,
+            transactions.category_id,
+            categories.name AS category_name
+          FROM transactions
+          LEFT JOIN categories ON transactions.category_id = categories.id
+          WHERE transactions.user_id = ${session.user.id}
+          ORDER BY transactions.created_at ASC
+          LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
+      } else {
+        transactions = await sql<TransactionsTable[]>`
+          SELECT
+            transactions.id,
+            transactions.title,
+            transactions.amount,
+            transactions.description,
+            transactions.date,
+            transactions.category_id,
+            categories.name AS category_name
+          FROM transactions
+          LEFT JOIN categories ON transactions.category_id = categories.id
+          WHERE transactions.user_id = ${session.user.id}
+          ORDER BY ABS(transactions.amount) ASC
+          LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+        `;
+      }
+    }
 
     return transactions;
   } catch (error) {
