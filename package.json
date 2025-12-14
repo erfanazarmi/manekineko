@@ -16,7 +16,7 @@
     "dotenv": "^17.2.1",
     "googleapis": "^158.0.0",
     "next": "^16.0.10",
-    "next-auth": "^5.0.0-beta.29",
+    "next-auth": "^5.0.0-beta.30",
     "nodemailer": "^7.0.11",
     "postgres": "^3.4.7",
     "react": "^19.2.3",
