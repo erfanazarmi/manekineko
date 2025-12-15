@@ -106,7 +106,7 @@ export async function fetchTransactions(
               ? sql`AND categories.name = ANY(${categories.split("|")})`
               : sql``
           }
-          ORDER BY transactions.date DESC
+          ORDER BY transactions.date DESC, transactions.created_at DESC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
       } else if (sort === "created_at") {
@@ -156,7 +156,7 @@ export async function fetchTransactions(
               ? sql`AND categories.name = ANY(${categories.split("|")})`
               : sql``
           }
-          ORDER BY ABS(transactions.amount) DESC
+          ORDER BY ABS(transactions.amount) DESC, transactions.created_at DESC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
       }
@@ -183,7 +183,7 @@ export async function fetchTransactions(
               ? sql`AND categories.name = ANY(${categories.split("|")})`
               : sql``
           }
-          ORDER BY transactions.date ASC
+          ORDER BY transactions.date ASC, transactions.created_at ASC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
       } else if (sort === "created_at") {
@@ -233,7 +233,7 @@ export async function fetchTransactions(
               ? sql`AND categories.name = ANY(${categories.split("|")})`
               : sql``
           }
-          ORDER BY ABS(transactions.amount) ASC
+          ORDER BY ABS(transactions.amount) ASC, transactions.created_at DESC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
       }
