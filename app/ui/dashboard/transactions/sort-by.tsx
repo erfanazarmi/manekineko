@@ -18,8 +18,8 @@ export default function SortBy() {
   };
 
   return (
-    <>
-      <label>Sort by:</label>
+    <div className="flex items-baseline">
+      <label>Sort by</label>
       <select
         name="sort_by"
         id="sort_by"
@@ -47,6 +47,6 @@ export default function SortBy() {
           Amount - Lowest
         </option>
       </select>
-    </>
+    </div>
   );
 }

@@ -24,7 +24,7 @@ export async function getCategories(): Promise<Category[]> {
 
 const ITEMS_PER_PAGE = 6;
 
-export async function fetchTransactionsPages() {
+export async function fetchTransactionsPages(type: string, categories: string) {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -33,7 +33,19 @@ export async function fetchTransactionsPages() {
 
   try {
     const data = await sql`
-      SELECT COUNT(*) FROM transactions WHERE user_id = ${session.user.id}
+      SELECT COUNT(*)
+      FROM transactions
+      LEFT JOIN categories ON transactions.category_id = categories.id
+      WHERE transactions.user_id = ${session.user.id}
+      ${type === "expense" ? sql`AND transactions.amount < 0` : sql``}
+      ${type === "income" ? sql`AND transactions.amount > 0` : sql``}
+      ${
+        categories === "null"
+          ? sql`AND categories.name IS NULL`
+          : categories !== "all"
+          ? sql`AND categories.name = ANY(${categories.split("|")})`
+          : sql``
+      }
     `;
 
     const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
@@ -44,7 +56,12 @@ export async function fetchTransactionsPages() {
   }
 }
 
-export async function fetchTransactions(currentPage: number, sortBy: string): Promise<TransactionsTable[]> {
+export async function fetchTransactions(
+  currentPage: number,
+  sortBy: string,
+  type: string,
+  categories: string,
+): Promise<TransactionsTable[]> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -80,6 +97,15 @@ export async function fetchTransactions(currentPage: number, sortBy: string): Pr
           FROM transactions
           LEFT JOIN categories ON transactions.category_id = categories.id
           WHERE transactions.user_id = ${session.user.id}
+          ${type === "expense" ? sql`AND transactions.amount < 0` : sql``}
+          ${type === "income" ? sql`AND transactions.amount > 0` : sql``}
+          ${
+            categories === "null"
+              ? sql`AND categories.name IS NULL`
+              : categories !== "all"
+              ? sql`AND categories.name = ANY(${categories.split("|")})`
+              : sql``
+          }
           ORDER BY transactions.date DESC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
@@ -96,6 +122,15 @@ export async function fetchTransactions(currentPage: number, sortBy: string): Pr
           FROM transactions
           LEFT JOIN categories ON transactions.category_id = categories.id
           WHERE transactions.user_id = ${session.user.id}
+          ${type === "expense" ? sql`AND transactions.amount < 0` : sql``}
+          ${type === "income" ? sql`AND transactions.amount > 0` : sql``}
+          ${
+            categories === "null"
+              ? sql`AND categories.name IS NULL`
+              : categories !== "all"
+              ? sql`AND categories.name = ANY(${categories.split("|")})`
+              : sql``
+          }
           ORDER BY transactions.created_at DESC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
@@ -112,6 +147,15 @@ export async function fetchTransactions(currentPage: number, sortBy: string): Pr
           FROM transactions
           LEFT JOIN categories ON transactions.category_id = categories.id
           WHERE transactions.user_id = ${session.user.id}
+          ${type === "expense" ? sql`AND transactions.amount < 0` : sql``}
+          ${type === "income" ? sql`AND transactions.amount > 0` : sql``}
+          ${
+            categories === "null"
+              ? sql`AND categories.name IS NULL`
+              : categories !== "all"
+              ? sql`AND categories.name = ANY(${categories.split("|")})`
+              : sql``
+          }
           ORDER BY ABS(transactions.amount) DESC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
@@ -130,6 +174,15 @@ export async function fetchTransactions(currentPage: number, sortBy: string): Pr
           FROM transactions
           LEFT JOIN categories ON transactions.category_id = categories.id
           WHERE transactions.user_id = ${session.user.id}
+          ${type === "expense" ? sql`AND transactions.amount < 0` : sql``}
+          ${type === "income" ? sql`AND transactions.amount > 0` : sql``}
+          ${
+            categories === "null"
+              ? sql`AND categories.name IS NULL`
+              : categories !== "all"
+              ? sql`AND categories.name = ANY(${categories.split("|")})`
+              : sql``
+          }
           ORDER BY transactions.date ASC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
@@ -146,6 +199,15 @@ export async function fetchTransactions(currentPage: number, sortBy: string): Pr
           FROM transactions
           LEFT JOIN categories ON transactions.category_id = categories.id
           WHERE transactions.user_id = ${session.user.id}
+          ${type === "expense" ? sql`AND transactions.amount < 0` : sql``}
+          ${type === "income" ? sql`AND transactions.amount > 0` : sql``}
+          ${
+            categories === "null"
+              ? sql`AND categories.name IS NULL`
+              : categories !== "all"
+              ? sql`AND categories.name = ANY(${categories.split("|")})`
+              : sql``
+          }
           ORDER BY transactions.created_at ASC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
@@ -162,6 +224,15 @@ export async function fetchTransactions(currentPage: number, sortBy: string): Pr
           FROM transactions
           LEFT JOIN categories ON transactions.category_id = categories.id
           WHERE transactions.user_id = ${session.user.id}
+          ${type === "expense" ? sql`AND transactions.amount < 0` : sql``}
+          ${type === "income" ? sql`AND transactions.amount > 0` : sql``}
+          ${
+            categories === "null"
+              ? sql`AND categories.name IS NULL`
+              : categories !== "all"
+              ? sql`AND categories.name = ANY(${categories.split("|")})`
+              : sql``
+          }
           ORDER BY ABS(transactions.amount) ASC
           LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
         `;
