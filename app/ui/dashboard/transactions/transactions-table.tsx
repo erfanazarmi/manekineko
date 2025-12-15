@@ -25,7 +25,7 @@ export default async function TransactionsTable({
 
   if (transactions.length === 0) {
     return (
-      <div>You have no transactions yet.</div>
+      <div>No transactions to show.</div>
     )
   }
 
