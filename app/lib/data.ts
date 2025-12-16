@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import postgres from "postgres";
-import { Category, Transaction, TransactionsTable, UserSettings } from "./definitions";
+import { Category, CategoryAggregate, Transaction, TransactionsTable, UserSettings } from "./definitions";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -295,6 +295,31 @@ export async function fetchTransactionsTotalStats(from: string, to: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch transactions total stats.");
+  }
+}
+
+export async function fetchExpenseChartData(from: string, to: string) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const data = await sql<CategoryAggregate[]>`
+      SELECT COALESCE(c.name, 'Uncategorized') AS name, ABS(SUM(t.amount)) AS total
+      FROM transactions t
+      LEFT JOIN categories c ON c.id = t.category_id
+      WHERE t.user_id = ${session.user.id}
+      AND t.amount < 0
+      AND date BETWEEN ${from} AND ${to}
+      GROUP BY COALESCE(c.name, 'Uncategorized')
+      ORDER BY total DESC;
+    `;
+    return data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch chart data.");
   }
 }
 

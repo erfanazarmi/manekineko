@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import TotalStatsCards from "./total-stats-cards";
+import ExpenseChart from "./chart";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -51,6 +52,11 @@ export default function TotalStats({ calendarType }: { calendarType: "gregorian"
         inputClass="text-center border border-neutral-300 dark:border-neutral-700 rounded-lg px-3 py-2 bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
       />
       <TotalStatsCards from={fromGregorian} to={toGregorian} />
+      <div className="w-full flex items-center justify-center md:mt-12">
+        <div className="w-full md:max-w-[460px]">
+          <ExpenseChart from={fromGregorian} to={toGregorian} />
+        </div>
+      </div>
     </div>
   );
 }

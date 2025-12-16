@@ -40,3 +40,8 @@ export type UserSettings = {
   calendar_type: "gregorian" | "jalali";
   language: "en" | "fa";
 };
+
+export type CategoryAggregate = {
+  name: string;
+  total: string;
+};
