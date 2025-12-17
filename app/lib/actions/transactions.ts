@@ -151,7 +151,7 @@ export async function editTransaction(
   redirect(`/dashboard/transactions?${params.toString()}`);
 }
 
-export async function deleteTransaction(id: string) {
+export async function deleteTransaction(id: string, redirectTo: string) {
   const session = await auth();
   if (!session?.user?.id) {
     return {message: "Unauthorized: sign in required."}
@@ -162,6 +162,18 @@ export async function deleteTransaction(id: string) {
   } catch (error) {
     return {message: "Database Error: Failed to delete transaction."};
   }
-  
+
+  const params = new URLSearchParams(redirectTo || "");
+
+  const pageParam = params.get("page");
+  const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
+  const typeFilter = params.get("type") || "all";
+  const categoriesFilter = params.get("categories") || "all";
+
+  const totalPages = await fetchTransactionsPages(typeFilter, categoriesFilter);
+  const targetPage = currentPage > totalPages ? totalPages : currentPage;
+  params.set("page", String(targetPage));
+
   revalidatePath("/dashboard/transactions");
+  redirect(`/dashboard/transactions?${params.toString()}`);
 }

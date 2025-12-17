@@ -37,6 +37,8 @@ export function DeleteTransaction({transaction}: {transaction: TransactionsTable
 }
 
 function DeleteDialog({close, transaction}: {close: () => void; transaction: TransactionsTable}) {
+  const searchParams = useSearchParams();
+
   return (
     <div className="fixed top-0 left-0 h-dvh w-dvw bg-[rgba(0,0,0,0.6)] flex items-center justify-center">
       <div className="bg-background max-w-[460px] w-full p-8 m-4 rounded-md">
@@ -60,7 +62,7 @@ function DeleteDialog({close, transaction}: {close: () => void; transaction: Tra
         <div className="flex justify-center mt-2 gap-4">
           <button
             type="button"
-            onClick={() => deleteTransaction(transaction.id)}
+            onClick={() => deleteTransaction(transaction.id, searchParams.toString())}
             className="cursor-pointer font-bold text-white bg-red rounded-md py-2 w-[90px]"
           >
             Yes
