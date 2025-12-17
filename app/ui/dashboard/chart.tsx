@@ -35,6 +35,12 @@ export default function ExpenseChart({ from, to }: { from: string; to: string; }
       },
       options: {
         plugins: {
+          legend: {
+            labels: {
+              color: isDark ? "#e5e7eb" : "#101010",
+              font: { size: 13 },
+            },
+          },
           tooltip: {
             callbacks: {
               label: (ctx) => `${ctx.label}: ${ctx.parsed.toLocaleString()}`,
