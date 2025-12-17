@@ -5,6 +5,7 @@ import { z } from "zod";
 import postgres from "postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { fetchTransactionsPages } from "../data";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -135,10 +136,19 @@ export async function editTransaction(
     };
   }
 
+  const params = new URLSearchParams(redirectTo || "");
+
+  const pageParam = params.get("page");
+  const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
+  const typeFilter = params.get("type") || "all";
+  const categoriesFilter = params.get("categories") || "all";
+
+  const totalPages = await fetchTransactionsPages(typeFilter, categoriesFilter);
+  const targetPage = currentPage > totalPages ? totalPages : currentPage;
+  params.set("page", String(targetPage));
+  
   revalidatePath("/dashboard/transactions");
-  redirect(redirectTo
-    ? `/dashboard/transactions?${redirectTo}`
-    : "/dashboard/transactions")
+  redirect(`/dashboard/transactions?${params.toString()}`);
 }
 
 export async function deleteTransaction(id: string) {
