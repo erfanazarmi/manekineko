@@ -115,6 +115,7 @@ export async function editTransaction(
   }
 
   const { title, type, amount, category, description, date } = validatedFields.data;
+  const redirectTo = formData.get("redirectTo") as string | null;
 
   try {
     await sql`
@@ -135,7 +136,9 @@ export async function editTransaction(
   }
 
   revalidatePath("/dashboard/transactions");
-  redirect("/dashboard/transactions");
+  redirect(redirectTo
+    ? `/dashboard/transactions?${redirectTo}`
+    : "/dashboard/transactions")
 }
 
 export async function deleteTransaction(id: string) {

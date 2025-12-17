@@ -4,6 +4,7 @@ import { Category, Transaction } from "@/app/lib/definitions";
 import { editTransaction, TransactionFormState } from "@/app/lib/actions/transactions";
 import { formatNumberWithSpaces } from "@/app/lib/utils";
 import { useState, useActionState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -14,6 +15,7 @@ export default function EditForm(
   { transaction, categories, calendarType }:
   { transaction: Transaction; categories: Category[]; calendarType: "gregorian" | "jalali" }
 ) {
+  const searchParams = useSearchParams();
   const [date, setDate] = useState<DateObject>();
 
   const initialState: TransactionFormState = { message: null, errors: { errors: [], properties: {} } };
@@ -212,6 +214,7 @@ export default function EditForm(
               {state.message}
             </p>
           )}
+          <input type="hidden" name="redirectTo" value={searchParams.toString()} />
         </form>
       </main>
     </div>

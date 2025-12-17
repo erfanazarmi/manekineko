@@ -5,11 +5,14 @@ import { TransactionsTable } from "@/app/lib/definitions";
 import { deleteTransaction } from "@/app/lib/actions/transactions";
 import { formatNumberWithSpaces } from "@/app/lib/utils";
 import { useState } from "react";
-import { redirect } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export function EditTransaction({id}: {id: string}) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   return (
-    <button className="cursor-pointer" onClick={() => redirect(`/dashboard/transactions/edit/${id}`)}>
+    <button className="cursor-pointer" onClick={() => router.push(`/dashboard/transactions/edit/${id}?${searchParams.toString()}`)}>
       <PencilIcon className="w-5" />
     </button>
   );
