@@ -287,7 +287,13 @@ export async function fetchTransactionsTotalStats(from: string, to: string) {
     AND date BETWEEN ${from} AND ${to}
   `;
 
+    const data_2 = await sql`
+      SELECT SUM(amount) AS total FROM transactions
+      WHERE user_id = ${session.user.id}
+    `;
+
   return {
+      all_time_total: data_2[0].total ?? 0,
       total_amount: data[0].total_amount ?? 0,
       total_income: data[0].total_income ?? 0,
       total_expense: Math.abs(data[0].total_expense ?? 0)
