@@ -53,7 +53,7 @@ export default function TotalStats({ calendarType }: { calendarType: "gregorian"
       />
       <TotalStatsCards from={fromGregorian} to={toGregorian} />
       <div className="w-full flex items-center justify-center md:mt-12">
-        <div className="w-full md:max-w-[460px]">
+        <div className="w-full max-w-[460px]">
           <ExpenseChart from={fromGregorian} to={toGregorian} />
         </div>
       </div>
