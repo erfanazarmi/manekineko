@@ -70,51 +70,77 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
               <label htmlFor="type" className="block pb-2">
                 Type
               </label>
-              <select
-                name="type"
-                id="type"
-                value={formData.type}
-                onChange={e => handleChange(e)}
-                className="w-full p-2 border-1 border-gray-400 rounded-md outline-none"
-                required
-              >
-                <option className="dark:bg-black" value="expense">
-                  Expense
-                </option>
-                <option className="dark:bg-black" value="income">
-                  Income
-                </option>
-              </select>
+              <div className="relative w-full">
+                <select
+                  name="type"
+                  id="type"
+                  value={formData.type}
+                  onChange={e => handleChange(e)}
+                  className="w-full h-11 px-3 border border-gray-400 rounded-md outline-none leading-normal appearance-none"
+                  required
+                >
+                  <option className="dark:bg-black" value="expense">
+                    Expense
+                  </option>
+                  <option className="dark:bg-black" value="income">
+                    Income
+                  </option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                  <svg
+                    className="w-4 h-4 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             <div className="w-full flex flex-col">
               <label htmlFor="category" className="block pb-2">
                 Category
               </label>
-              <select
-                name="category"
-                id="category"
-                value={formData.category}
-                onChange={e => handleChange(e)}
-                className="w-full p-2 border-1 border-gray-400 rounded-md outline-none"
-                required
-              >
-                <option
-                  value="empty"
-                  className="dark:bg-black"
+              <div className="relative w-full">
+                <select
+                  name="category"
+                  id="category"
+                  value={formData.category}
+                  onChange={e => handleChange(e)}
+                  className="w-full h-11 px-3 border border-gray-400 rounded-md outline-none leading-normal appearance-none"
+                  required
                 >
-                  — None —
-                </option>
-                {categories.map((category) => (
                   <option
-                    key={category.name}
-                    value={category.id}
+                    value="empty"
                     className="dark:bg-black"
                   >
-                    {category.name}
+                    — None —
                   </option>
-                ))}
-              </select>
+                  {categories.map((category) => (
+                    <option
+                      key={category.name}
+                      value={category.id}
+                      className="dark:bg-black"
+                    >
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                  <svg
+                    className="w-4 h-4 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
 
