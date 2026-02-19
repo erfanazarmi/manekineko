@@ -3,7 +3,7 @@
 import { Category, Transaction } from "@/app/lib/definitions";
 import { editTransaction, TransactionFormState } from "@/app/lib/actions/transactions";
 import { formatNumberWithSpaces } from "@/app/lib/utils";
-import { useState, useActionState, useEffect } from "react";
+import { useState, useActionState, useEffect, startTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -66,7 +66,14 @@ export default function EditForm(
     <div className="w-full flex justify-center">
       <main className="w-full flex flex-col max-w-[600px] pt-10">
         <h1 className="text-2xl mb-12">Edit Transaction</h1>
-        <form action={formAction} className="w-full flex flex-col space-y-5">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            startTransition(() => { formAction(new FormData(form)); });
+          }}
+          className="w-full flex flex-col space-y-5"
+        >
           <div className="w-full flex gap-4">
             <div className="w-full flex flex-col">
               <label htmlFor="type" className="block pb-2">

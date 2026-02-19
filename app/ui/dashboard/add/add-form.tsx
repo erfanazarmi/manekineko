@@ -3,7 +3,7 @@
 import { Category } from "@/app/lib/definitions";
 import { addTransaction, TransactionFormState } from "@/app/lib/actions/transactions";
 import { formatNumberWithSpaces } from "@/app/lib/utils";
-import { useState, useEffect, useActionState } from "react";
+import { useState, useEffect, useActionState, startTransition } from "react";
 import AlertBox from "../alert-box";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import gregorian from "react-date-object/calendars/gregorian";
@@ -57,7 +57,14 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
     <div className="w-full flex justify-center">
       <main className="w-full flex flex-col max-w-[600px] pt-10">
         <h1 className="text-2xl mb-12">New Transaction</h1>
-        <form action={formAction} className="w-full flex flex-col space-y-5">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            startTransition(() => { formAction(new FormData(form)); });
+          }}
+          className="w-full flex flex-col space-y-5"
+        >
           <div className="w-full flex gap-4">
             <div className="w-full flex flex-col">
               <label htmlFor="type" className="block pb-2">
@@ -66,6 +73,7 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
               <select
                 name="type"
                 id="type"
+                value={formData.type}
                 onChange={e => handleChange(e)}
                 className="w-full p-2 border-1 border-gray-400 rounded-md outline-none"
                 required
@@ -86,6 +94,7 @@ export default function AddForm({ categories, calendarType }: { categories: Cate
               <select
                 name="category"
                 id="category"
+                value={formData.category}
                 onChange={e => handleChange(e)}
                 className="w-full p-2 border-1 border-gray-400 rounded-md outline-none"
                 required
